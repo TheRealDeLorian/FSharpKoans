@@ -29,7 +29,7 @@ open FSharpKoans.Core
 module ``about the stock example`` =
     
     let stockData =
-        [ "Date,Open,High,Low,Close,Volume,Adj Close";
+        [ "Date,Open,High,Low,Close,Volume,Adj Close"; //indices 1, 3; closingPriceDiff = Seq.maxBy abs(System.Double.Parse(stockdata[i][3]) - System.Double.Parse(stockdata[i][1]))
           "2012-03-30,32.40,32.41,32.04,32.26,31749400,32.26";
           "2012-03-29,32.06,32.19,31.81,32.12,37038500,32.12";
           "2012-03-28,32.52,32.70,32.04,32.19,41344800,32.19";
@@ -57,9 +57,28 @@ module ``about the stock example`` =
     // Feel free to add extra [<Koan>] members here to write
     // tests for yourself along the way. You can also try 
     // using the F# Interactive window to check your progress.
+    let SplitCommas (x:string) =
+         x.Split([|','|])
 
+    let GetOpenCloseDifference a =
+            let split = SplitCommas a
+            abs (System.Double.Parse(split[4]) - System.Double.Parse(split[1]))
+   
+    [<Koan>]
+    let GetPriceDiffReturnsDifference() = 
+        let teststring = "2012-03-30,32.40,32.41,32.04,32.26,31749400,32.26"
+        let result = GetOpenCloseDifference teststring
+        AssertEquality 0.14000000000000057 result
+    
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
-        
+        let mutable result = ""
+        let mutable f = 0.0
+        for i in Seq.skip 1 stockData do
+            if GetOpenCloseDifference(i) > f then
+            f <- GetOpenCloseDifference(i)
+            result <- SplitCommas(i)[0]         
+
         AssertEquality "2012-03-13" result
+
+

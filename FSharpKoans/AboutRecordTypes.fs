@@ -20,19 +20,22 @@ module ``about record types`` =
     let RecordsHaveProperties() =
         let mario = { Name = "Mario"; Occupation = "Plumber"; }
 
-        AssertEquality mario.Name __
-        AssertEquality mario.Occupation __
+        AssertEquality mario.Name "Mario"
+        AssertEquality mario.Occupation "Plumber"
 
     [<Koan>]
     let CreatingFromAnExistingRecord() =
         let mario = { Name = "Mario"; Occupation = "Plumber"; }
         let luigi = { mario with Name = "Luigi"; }
+        let wario = {mario with Name = "Wario"; Occupation = "Baddie"}
 
-        AssertEquality mario.Name __
-        AssertEquality mario.Occupation __
+        AssertEquality mario.Name "Mario"
+        AssertEquality mario.Occupation "Plumber"
 
-        AssertEquality luigi.Name __
-        AssertEquality luigi.Occupation __
+        AssertEquality luigi.Name "Luigi"
+        AssertEquality luigi.Occupation "Plumber"
+
+        AssertEquality wario.Occupation "Baddie"
 
     [<Koan>]
     let ComparingRecords() =
@@ -52,20 +55,24 @@ module ``about record types`` =
             else
                 "he is still kind of a koopa"
 
-        AssertEquality koopaComparison __
-        AssertEquality bowserComparison __
+        AssertEquality koopaComparison "all the koopas are pretty much the same"
+        AssertEquality bowserComparison "he is still kind of a koopa"
 
     [<Koan>]
     let YouCanPatternMatchAgainstRecords() =
         let mario = { Name = "Mario"; Occupation = "Plumber"; }
         let luigi = { Name = "Luigi"; Occupation = "Plumber"; }
         let bowser = { Name = "Bowser"; Occupation = "Kidnapper"; }
+        let wario = { Name = "Wario"; Occupation = "Capitalist"}
 
         let determineSide character =
             match character with
             | { Occupation = "Plumber" } -> "good guy"
-            | _ -> "bad guy"
+            | {Occupation = "Kidnapper"} -> "bad guy"
+            | {Occupation = "Capitalist"} -> "it's debatable..."
+            
 
-        AssertEquality (determineSide mario) __
-        AssertEquality (determineSide luigi) __
-        AssertEquality (determineSide bowser) __
+        AssertEquality (determineSide mario) "good guy"
+        AssertEquality (determineSide luigi) "good guy"
+        AssertEquality (determineSide bowser) "bad guy"
+        AssertEquality (determineSide wario) "it's debatable..."

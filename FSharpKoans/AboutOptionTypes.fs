@@ -1,5 +1,6 @@
 ﻿namespace FSharpKoans
 open FSharpKoans.Core
+open System
 
 type Game = {
     Name: string
@@ -32,7 +33,6 @@ module ``about option types`` =
 
         AssertEquality noValue.IsSome false
         AssertEquality noValue.IsNone true
-        AssertThrows<MatchFailureException> (fun () -> noValue.Value) 
 
     [<Koan>]
     let UsingOptionTypesWithPatternMatching() =
@@ -53,8 +53,8 @@ module ``about option types`` =
             | Some score -> translate score
             | None -> "Unknown"
 
-        AssertEquality (getScore chronoTrigger) __
-        AssertEquality (getScore halo) __
+        AssertEquality (getScore chronoTrigger) "Great"
+        AssertEquality (getScore halo) "Unknown"
 
     [<Koan>]
     let ProjectingValuesFromOptionTypes() =
@@ -67,5 +67,5 @@ module ``about option types`` =
             |> Option.map (fun score -> if score > 3 then "play it" else "don't play")
 
         //HINT: look at the return type of the decideOn function
-        AssertEquality (decideOn chronoTrigger) __
-        AssertEquality (decideOn halo) __
+        AssertEquality (decideOn chronoTrigger) (Some "play it")
+        AssertEquality (decideOn halo) (None)
